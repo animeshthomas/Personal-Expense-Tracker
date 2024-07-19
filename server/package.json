@@ -1,0 +1,28 @@
+{
+  "name": "personal-expense-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/animeshthomas/Personal-Expense-Tracker.git"
+  },
+  "author": "animesh-thomas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/animeshthomas/Personal-Expense-Tracker/issues"
+  },
+  "homepage": "https://github.com/animeshthomas/Personal-Expense-Tracker#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.1"
+  }
+}
