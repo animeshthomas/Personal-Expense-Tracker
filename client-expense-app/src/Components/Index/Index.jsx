@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 const Index = () => {
   return (
     <div className="home-container">
@@ -6,7 +7,9 @@ const Index = () => {
         <div className="intro">
           <h2>Welcome to your Expense Tracker</h2>
           <p>Keep track of your expenses easily and efficiently.</p>
-          <button className="btn signup-btn">Signup/Login</button>
+          <Link to="/signup">
+            <button className="btn signup-btn">Signup/Login</button>
+          </Link>
         </div>
       </main>
     </div>
