@@ -73,19 +73,27 @@ const SignupLogin = () => {
 
     try {
       if (isSignup) {
-        await axios.post(BASE_URL + '/api/auth/register', {
+        await axios.post(`${BASE_URL}/api/auth/register`, {
           fullname,
           email,
           password,
         });
         toast.success('Signup successful');
-        window.setTimeout(() => navigate('/'), 2000);
+        setTimeout(() => navigate('/'), 2000);
       } else {
-        // Handle login API call here
+        const response = await axios.post(`${BASE_URL}/api/auth/login`, {
+          email,
+          password,
+        });
+        let name = response.data.user.user.name;
+        toast.success('Login successful , Welcome ' + name);
+        // Save token in localStorage or handle it as needed
+        localStorage.setItem('token', response.data.token);
+        setTimeout(() => navigate('/home'), 2000);
       }
     } catch (err) {
       console.error(err.response ? err.response.data : err.message);
-      toast.error(err.response ? err.response.data.msg : 'Server error');
+      toast.error(err.response ? err.response.data.errors[0].msg : 'Server error');
     } finally {
       setLoading(false);
     }
@@ -173,11 +181,11 @@ const SignupLogin = () => {
               ) : (
                 <>
                   <div className="form-group">
-                    <label htmlFor="loginEmail">Email address</label>
+                    <label htmlFor="email">Email address</label>
                     <input
                       type="email"
                       className="form-control"
-                      id="loginEmail"
+                      id="email"
                       value={email}
                       onChange={handleChange}
                       placeholder="Enter your email"
@@ -186,11 +194,11 @@ const SignupLogin = () => {
                     {errors.email && <p className="error-message">{errors.email}</p>}
                   </div>
                   <div className="form-group">
-                    <label htmlFor="loginPassword">Password</label>
+                    <label htmlFor="password">Password</label>
                     <input
                       type="password"
                       className="form-control"
-                      id="loginPassword"
+                      id="password"
                       value={password}
                       onChange={handleChange}
                       placeholder="Enter your password"
