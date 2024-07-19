@@ -27,7 +27,7 @@ exports.create = [
     try {
       let user = await User.findOne({ email });
       if (user) {
-        return res.status(400).json({ msg: 'User already exists' });
+        return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
       }
 
       user = new User({
@@ -51,7 +51,50 @@ exports.create = [
       res.json({ msg: 'User created successfully', payload });
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server error');
+      res.status(500).json({ errors: [{ msg: 'Server error' }] });
+    }
+  },
+];
+
+exports.login = [
+  body('email').isEmail().withMessage('Invalid email format').normalizeEmail(),
+  body('password').notEmpty().withMessage('Password is required'),
+
+  async (req, res) => {
+    // Extract validation errors from the request
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email, password } = req.body;
+
+    try {
+      let user = await User.findOne({ email });
+      if (!user) {
+        return res.status(400).json({ errors: [{ msg: 'User not found' }] });
+      }
+
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
+      }
+
+      const payload = {
+        user: {
+          id: user.id,
+          name: user.fullname,
+        },
+      };
+
+      jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' }, (err, token) => {
+        if (err) throw err;
+        res.json({ token, user: payload });
+      });
+    } catch (err) {
+      console.error(err.message);
+      console.log(err);
+      res.status(500).json({ errors: [{ msg: 'Server error' }] });
     }
   },
 ];
