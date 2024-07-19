@@ -1,53 +1,57 @@
+const { body, validationResult } = require('express-validator');
 const User = require('../schemas/authentication/userSchema');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config(); // Load environment variables
 
-exports.create = async (req, res) => {
-  const { username, email, password } = req.body;
+exports.create = [
+  // Validate and sanitize fields
+  body('fullname')
+    .trim()
+    .notEmpty()
+    .withMessage('Full name is required')
+    .matches(/^[A-Za-z\s]+$/)
+    .withMessage('Full name can only contain alphabets and spaces'),
+  body('email').isEmail().withMessage('Invalid email format').normalizeEmail(),
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
 
-  try {
-    let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ msg: 'User already exists' });
-    }
-    user = new User({
-      username,
-      email,
-      password,
-    });
-
-    // Encrypt the password
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-
-    await user.save();
-
-    const payload = {
-      user: {
-        id: user.id,
-      },
-    };
-    if (user) {
-      res.json({ msg: 'User created successfully' });
+  async (req, res) => {
+    // Extract validation errors from the request
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
-    // jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 360000 }, (err, token) => {
-    //   if (err) throw err;
-    //   res.json({ token });
-    // });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-};
+    const { fullname, email, password } = req.body;
 
-exports.viewAll = async (req, res) => {
-  try {
-    const users = await User.find();
-    res.json(users);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-};
+    try {
+      let user = await User.findOne({ email });
+      if (user) {
+        return res.status(400).json({ msg: 'User already exists' });
+      }
+
+      user = new User({
+        fullname,
+        email,
+        password,
+      });
+      // Hash password
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+
+      await user.save();
+
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+
+      // Return success response
+      res.json({ msg: 'User created successfully', payload });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
+    }
+  },
+];
