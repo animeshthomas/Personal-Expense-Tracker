@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BASE_URL } from '../Config/config';
 
 const SignupLogin = () => {
   const [isSignup, setIsSignup] = useState(true);
@@ -72,7 +73,7 @@ const SignupLogin = () => {
 
     try {
       if (isSignup) {
-        await axios.post('http://localhost:8000/api/auth/register', {
+        await axios.post(BASE_URL + '/api/auth/register', {
           fullname,
           email,
           password,
