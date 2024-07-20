@@ -29,12 +29,6 @@ const NavBar = () => {
         <Link className="nav-link" to="/statistics">
           <FaChartLine className="icon" /> Statistics
         </Link>
-        <Link className="nav-link" to="/edit-profile">
-          <FaUserEdit className="icon" /> Edit Profile
-        </Link>
-        <Link className="nav-link" to="/change-password">
-          <FaKey className="icon" /> Change Password
-        </Link>
         <Link className="nav-link" to="/" onClick={logout}>
           <FaSignOutAlt className="icon" /> Logout
         </Link>
