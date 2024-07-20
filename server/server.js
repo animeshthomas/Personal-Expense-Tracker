@@ -2,6 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const userSchema = require('./schemas/authentication/userSchema');
+const categorySchema = require('./schemas/expenseSchemas/catagorySchema');
+const expenseSchema = require('./schemas/expenseSchemas/expenseSchema');
+
 //importing routers
 const authRouter = require('./routers/authRouter');
 const expenseRouter = require('./routers/expenseRouter');

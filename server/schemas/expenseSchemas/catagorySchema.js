@@ -10,7 +10,6 @@ const categorySchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'ExpenseUser',
-    required: false, // This is false because we want to allow categories to be shared among users
   },
 });
 
