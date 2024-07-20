@@ -4,9 +4,6 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "predeploy":"npm run build",
-    "deploy": "gh-pages -d build",
     "test": "node server.js"
   },
   "repository": {
@@ -18,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/animeshthomas/Personal-Expense-Tracker/issues"
   },
-  "homepage": "https://github.com/animeshthomas/Personal-Expense-Tracker",
+  "homepage": "https://github.com/animeshthomas/Personal-Expense-Tracker#readme",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
