@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FaList, FaChartLine, FaUserEdit, FaKey, FaSignOutAlt } from 'react-icons/fa';
+import { FaList, FaChartLine, FaSignOutAlt } from 'react-icons/fa';
 
 const NavBar = () => {
   const navigate = useNavigate();

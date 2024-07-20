@@ -29,6 +29,11 @@ const UserHome = () => {
 
   const handleCategorySubmit = async e => {
     e.preventDefault();
+    if (!newCategory.trim()) {
+      toast.error('Category name cannot be empty');
+      return;
+    }
+
     try {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -45,19 +50,13 @@ const UserHome = () => {
         },
       );
 
-      setCategories([...categories, response.data.category]);
+      setCategories(prevCategories => [...prevCategories, response.data.category]);
       toast.success('Category added successfully!');
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
       setNewCategory('');
       setShowCategoryForm(false);
     } catch (error) {
-      if (error.response) {
-        toast.error(error.response.data.errors[0].msg);
-      } else {
-        toast.error('Server error');
-      }
+      const errorMessage = error.response?.data?.errors?.[0]?.msg || 'Server error';
+      toast.error(errorMessage);
     }
   };
 
@@ -74,7 +73,7 @@ const UserHome = () => {
         throw new Error('No token found');
       }
 
-      const response = await axios.post(
+      await axios.post(
         `${BASE_URL}/api/expense/create`,
         { date, amount, category, description },
         {
@@ -85,27 +84,18 @@ const UserHome = () => {
       );
 
       toast.success('Expense added successfully!');
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-      setShowExpenseForm(false);
       setAmount('');
       setDate('');
       setCategory('');
       setDescription('');
+      setShowExpenseForm(false);
     } catch (error) {
-      if (error.response) {
-        toast.error(error.response.data.errors[0].msg);
-      } else {
-        toast.error('Server error');
-      }
+      const errorMessage = error.response?.data?.errors?.[0]?.msg || 'Server error';
+      toast.error(errorMessage);
     }
   };
 
   useEffect(() => {
-    if (!localStorage.getItem('token')) {
-      window.location.href = '/';
-    }
     const fetchCategories = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -126,18 +116,17 @@ const UserHome = () => {
         setCategories(response.data);
         setLoading(false);
       } catch (error) {
-        if (error.response) {
-          setError(error.response.data.errors[0].msg);
-        } else if (error.message === 'No token found') {
-          setError('No token found. Please log in again.');
-        } else {
-          setError('Server error');
-        }
+        const errorMessage = error.response?.data?.errors?.[0]?.msg || 'Server error';
+        setError(errorMessage);
         setLoading(false);
       }
     };
 
-    fetchCategories();
+    if (localStorage.getItem('token')) {
+      fetchCategories();
+    } else {
+      window.location.href = '/';
+    }
   }, []);
 
   return (
@@ -194,9 +183,9 @@ const UserHome = () => {
                       onChange={e => setCategory(e.target.value)}
                       required
                     >
-                      {categories.map(category => (
-                        <option key={category._id} value={category._id}>
-                          {category.name}
+                      {categories.map(cat => (
+                        <option key={cat._id} value={cat._id}>
+                          {cat.name}
                         </option>
                       ))}
                     </select>
