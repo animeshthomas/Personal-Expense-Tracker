@@ -5,6 +5,7 @@ import axios from 'axios';
 import { BASE_URL } from '../../Config/config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ViewExpenses from './ViewExpenses';
 
 const UserHome = () => {
   const [showExpenseForm, setShowExpenseForm] = useState(false);
@@ -13,6 +14,10 @@ const UserHome = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [newCategory, setNewCategory] = useState('');
+  const [amount, setAmount] = useState('');
+  const [date, setDate] = useState('');
+  const [category, setCategory] = useState('');
+  const [description, setDescription] = useState('');
 
   const handleAddExpenseClick = () => {
     setShowExpenseForm(!showExpenseForm);
@@ -56,7 +61,51 @@ const UserHome = () => {
     }
   };
 
+  const handleExpenseSubmit = async e => {
+    e.preventDefault();
+    if (amount <= 0) {
+      toast.error('Amount must be greater than 0');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const response = await axios.post(
+        `${BASE_URL}/api/expense/create`,
+        { date, amount, category, description },
+        {
+          headers: {
+            token: token,
+          },
+        },
+      );
+
+      toast.success('Expense added successfully!');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+      setShowExpenseForm(false);
+      setAmount('');
+      setDate('');
+      setCategory('');
+      setDescription('');
+    } catch (error) {
+      if (error.response) {
+        toast.error(error.response.data.errors[0].msg);
+      } else {
+        toast.error('Server error');
+      }
+    }
+  };
+
   useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      window.location.href = '/';
+    }
     const fetchCategories = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -100,15 +149,29 @@ const UserHome = () => {
           {showExpenseForm ? 'Cancel' : 'Add Expense'}
         </button>
         {showExpenseForm && (
-          <form className="expense-form">
+          <form className="expense-form" onSubmit={handleExpenseSubmit}>
             <div className="form-row">
               <div className="form-group">
                 <label htmlFor="date">Date:</label>
-                <input type="date" id="date" name="date" required />
+                <input
+                  type="date"
+                  id="date"
+                  name="date"
+                  value={date}
+                  onChange={e => setDate(e.target.value)}
+                  required
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="amount">Amount:</label>
-                <input type="number" id="amount" name="amount" required />
+                <input
+                  type="number"
+                  id="amount"
+                  name="amount"
+                  value={amount}
+                  onChange={e => setAmount(e.target.value)}
+                  required
+                />
               </div>
             </div>
             <div className="form-row">
@@ -124,9 +187,15 @@ const UserHome = () => {
                   ) : error ? (
                     <p>{error}</p>
                   ) : (
-                    <select id="category" name="category" required>
+                    <select
+                      id="category"
+                      name="category"
+                      value={category}
+                      onChange={e => setCategory(e.target.value)}
+                      required
+                    >
                       {categories.map(category => (
-                        <option key={category._id} value={category.name}>
+                        <option key={category._id} value={category._id}>
                           {category.name}
                         </option>
                       ))}
@@ -136,7 +205,13 @@ const UserHome = () => {
               </div>
               <div className="form-group">
                 <label htmlFor="description">Description:</label>
-                <textarea id="description" name="description" rows="4" />
+                <textarea
+                  id="description"
+                  name="description"
+                  rows="4"
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
+                />
               </div>
             </div>
             <button type="submit" className="submit-button">
@@ -165,6 +240,9 @@ const UserHome = () => {
             </button>
           </form>
         )}
+      </div>
+      <div>
+        <ViewExpenses />
       </div>
       <ToastContainer />
     </div>

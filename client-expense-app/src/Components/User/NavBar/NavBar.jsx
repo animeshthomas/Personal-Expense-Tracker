@@ -23,7 +23,7 @@ const NavBar = () => {
           Expense Tracker
         </Link>
         <hr />
-        <Link className="nav-link" to="/expenses">
+        <Link className="nav-link" to="/home">
           <FaList className="icon" /> Expenses
         </Link>
         <Link className="nav-link" to="/statistics">
