@@ -54,7 +54,7 @@ const ViewExpenses = () => {
           toast.error(err.response.data.errors[0].msg);
         } else {
           console.log(err);
-          toast.error(err);
+          toast.error(err.message);
         }
       }
     }
@@ -64,7 +64,7 @@ const ViewExpenses = () => {
     return <div>Loading...</div>;
   }
   if (expenses.length === 0) {
-    return <div></div>;
+    return <div>No expenses available</div>;
   }
 
   if (error) {
@@ -91,10 +91,13 @@ const ViewExpenses = () => {
               <tr key={expense._id}>
                 <td>{new Date(expense.date).toLocaleDateString()}</td>
                 <td>{expense.amount}</td>
-                <td>{expense.category.name}</td>
+                <td>{expense.category ? expense.category.name : 'Not Available'}</td>
                 <td>{expense.description}</td>
                 <td>
-                  <button className="btn btn-danger" onClick={() => handleDelete(expense._id)}>
+                  <button
+                    className="btn btn-danger btn-action"
+                    onClick={() => handleDelete(expense._id)}
+                  >
                     Delete
                   </button>
                 </td>
