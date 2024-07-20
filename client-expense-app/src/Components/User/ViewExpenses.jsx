@@ -38,8 +38,33 @@ const ViewExpenses = () => {
     fetchExpenses();
   }, []);
 
+  const handleDelete = async id => {
+    if (window.confirm('Are you sure you want to delete this expense?')) {
+      try {
+        const token = localStorage.getItem('token');
+        await axios.delete(`${BASE_URL}/api/expense/delete`, {
+          headers: { token },
+          data: { id },
+        });
+        // Refresh the expense list
+        setExpenses(expenses.filter(expense => expense._id !== id));
+        toast.success('Expense deleted successfully');
+      } catch (err) {
+        if (err.response && err.response.data.errors) {
+          toast.error(err.response.data.errors[0].msg);
+        } else {
+          console.log(err);
+          toast.error(err);
+        }
+      }
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
+  }
+  if (expenses.length === 0) {
+    return <div></div>;
   }
 
   if (error) {
@@ -58,6 +83,7 @@ const ViewExpenses = () => {
               <th>Amount</th>
               <th>Category</th>
               <th>Description</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -68,7 +94,9 @@ const ViewExpenses = () => {
                 <td>{expense.category.name}</td>
                 <td>{expense.description}</td>
                 <td>
-                  <button class="btn-danger">Delete</button>
+                  <button className="btn btn-danger" onClick={() => handleDelete(expense._id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
