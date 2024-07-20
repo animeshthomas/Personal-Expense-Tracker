@@ -19,7 +19,7 @@ This is a Personal Expense Tracker application designed to help users manage the
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/your-repository.git
+   https://github.com/animeshthomas/Personal-Expense-Tracker.git
    cd Personal-Expense-Tracker/server
    ```
 
