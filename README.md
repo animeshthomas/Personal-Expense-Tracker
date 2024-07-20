@@ -3,7 +3,7 @@
 
 ## API Documentation
 
-For detailed API documentation, please visit the following link: [API Documentation](https://docs.google.com/spreadsheets/d/e/2PACX-1vQnKBS7MjmQl31k6K2Smw4xm85WNhVzy0wkSxmOE7V8czKtlU034A-DHgBKZ_WWBPexdTXXuw-DFNmH/pubhtml)
+For detailed API documentation, please visit the following link: 
 https://docs.google.com/spreadsheets/d/e/2PACX-1vQnKBS7MjmQl31k6K2Smw4xm85WNhVzy0wkSxmOE7V8czKtlU034A-DHgBKZ_WWBPexdTXXuw-DFNmH/pubhtml
 ## Overview
 
