@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/animeshthomas/Personal-Expense-Tracker/issues"
   },
-  "homepage": "https://github.com/animeshthomas/Personal-Expense-Tracker#readme",
+  "homepage": "https://github.com/animeshthomas/Personal-Expense-Tracker",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
