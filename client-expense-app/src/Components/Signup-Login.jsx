@@ -89,6 +89,7 @@ const SignupLogin = () => {
         toast.success('Login successful , Welcome ' + name);
         // Save token in localStorage or handle it as needed
         localStorage.setItem('token', response.data.token);
+        localStorage.setItem('name', name);
         setTimeout(() => navigate('/home'), 2000);
       }
     } catch (err) {
