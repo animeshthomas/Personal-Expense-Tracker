@@ -10,6 +10,7 @@ const categorySchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'ExpenseUser',
+    required: false,
   },
 });
 
