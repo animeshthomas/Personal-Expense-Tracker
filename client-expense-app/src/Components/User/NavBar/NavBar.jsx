@@ -39,7 +39,6 @@ const NavBar = () => {
           <FaSignOutAlt className="icon" /> Logout
         </Link>
       </div>
-      <div className="main-content"></div>
     </>
   );
 };
