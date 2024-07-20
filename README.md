@@ -1,7 +1,9 @@
-Certainly! Here’s how you would format the information as a `README.md` file for your GitHub repository:
-
 ```markdown
 # Personal Expense Tracker
+
+## API Documentation
+
+For detailed API documentation, please visit the following link: [API Documentation](https://docs.google.com/spreadsheets/d/e/2PACX-1vQnKBS7MjmQl31k6K2Smw4xm85WNhVzy0wkSxmOE7V8czKtlU034A-DHgBKZ_WWBPexdTXXuw-DFNmH/pubhtml)
 
 ## Overview
 
@@ -62,4 +64,6 @@ This is a Personal Expense Tracker application designed to help users manage the
    ```bash
    npm start
    ```
+```
 
+Feel free to adjust any details as needed!
