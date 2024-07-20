@@ -86,10 +86,12 @@ const SignupLogin = () => {
           password,
         });
         let name = response.data.user.user.name;
+        let id = response.data.user.user.id;
         toast.success('Login successful , Welcome ' + name);
         // Save token in localStorage or handle it as needed
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('name', name);
+        localStorage.setItem('id', id);
         setTimeout(() => navigate('/home'), 2000);
       }
     } catch (err) {
