@@ -4,6 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
+    "predeploy":"npm run build",
+    "deploy": "gh-pages -d build",
     "test": "node server.js"
   },
   "repository": {
