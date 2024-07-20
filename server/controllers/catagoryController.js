@@ -81,12 +81,58 @@ exports.read = async (req, res) => {
           return res.status(404).json({ errors: [{ msg: 'User not found' }] });
         }
 
-        const categories = await categorySchema.find({ userId: decoded.user.id });
+        // Fetch categories with the userId and default categories without userId
+        const categories = await categorySchema.find({
+          $or: [{ userId: decoded.user.id }, { userId: { $exists: false } }],
+        });
+
         if (categories.length === 0) {
           return res.status(404).json({ errors: [{ msg: 'No categories found' }] });
         }
 
         res.json(categories);
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ errors: [{ msg: 'Server error' }] });
+      }
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ errors: [{ msg: 'Server error' }] });
+  }
+};
+
+exports.delete = async (req, res) => {
+  const token = req.headers.token;
+  const { id } = req.body;
+
+  try {
+    if (!token) {
+      return res.status(401).json({ errors: [{ msg: 'Unauthorized Token' }] });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ errors: [{ msg: 'Unauthorized' }] });
+      }
+
+      try {
+        const user = await User.findById(decoded.user.id);
+        if (!user) {
+          return res.status(404).json({ errors: [{ msg: 'User not found' }] });
+        }
+
+        const category = await categorySchema.findById(id);
+        if (!category) {
+          return res.status(404).json({ errors: [{ msg: 'Category not found' }] });
+        }
+
+        if (category.userId.toString() !== decoded.user.id) {
+          return res.status(401).json({ errors: [{ msg: 'Unauthorized' }] });
+        }
+
+        await categorySchema.findByIdAndDelete(id);
+        res.json({ msg: 'Category deleted successfully' });
       } catch (err) {
         console.error(err);
         res.status(500).json({ errors: [{ msg: 'Server error' }] });
