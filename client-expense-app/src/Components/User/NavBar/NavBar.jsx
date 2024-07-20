@@ -2,20 +2,9 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {
-  FaHome,
-  FaInfoCircle,
-  FaPlusCircle,
-  FaList,
-  FaChartLine,
-  FaUser,
-  FaUserEdit,
-  FaKey,
-  FaSignOutAlt,
-} from 'react-icons/fa';
+import { FaList, FaChartLine, FaUserEdit, FaKey, FaSignOutAlt } from 'react-icons/fa';
 
 const NavBar = () => {
-  const userName = localStorage.getItem('name') || 'User';
   const navigate = useNavigate();
 
   const logout = () => {
@@ -34,23 +23,11 @@ const NavBar = () => {
           Expense Tracker
         </Link>
         <hr />
-        <Link className="nav-link" to="/">
-          <FaHome className="icon" /> Home
-        </Link>
-        <Link className="nav-link" to="/about">
-          <FaInfoCircle className="icon" /> About
-        </Link>
-        <Link className="nav-link" to="/add-expense">
-          <FaPlusCircle className="icon" /> Add Expense
-        </Link>
         <Link className="nav-link" to="/expenses">
           <FaList className="icon" /> Expenses
         </Link>
         <Link className="nav-link" to="/statistics">
           <FaChartLine className="icon" /> Statistics
-        </Link>
-        <Link className="nav-link" to="/profile">
-          <FaUser className="icon" /> Profile
         </Link>
         <Link className="nav-link" to="/edit-profile">
           <FaUserEdit className="icon" /> Edit Profile
@@ -62,7 +39,7 @@ const NavBar = () => {
           <FaSignOutAlt className="icon" /> Logout
         </Link>
       </div>
-      <div className="main-content">{/* Your main content goes here */}</div>
+      <div className="main-content"></div>
     </>
   );
 };
