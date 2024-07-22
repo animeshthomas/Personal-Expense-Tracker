@@ -14,6 +14,11 @@ This is a Personal Expense Tracker application designed to help users manage the
 - **Backend (Server)**: Located in the `server` directory.
 - **Frontend (Client)**: Located in the `client-expense-app` directory.
 
+## Important
+   ### If you are running locally
+- **Frontend (Client)**: Located in the `client-expense-app/src/Config/config.js` directory.
+- **Frontend (Client)**: uncomment the local link and comment hosted server link
+
 ## Backend Installation
 
 1. **Clone the Repository**
